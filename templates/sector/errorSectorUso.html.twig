@@ -1,0 +1,12 @@
+{% extends 'principal/index.html.twig' %}
+
+{% block title %}Error{% endblock %}
+
+{% block body %}
+
+<div class="container h-100 " style="margin-top:40px">
+    <p style="text-align:center">El sector se encuentra actualmente en uso</p>
+    <button type="button" class="btn btn-default" onclick="location.href='{{ path('listadoSectores')}}'">Volver</button>
+</div>
+
+{% endblock %}

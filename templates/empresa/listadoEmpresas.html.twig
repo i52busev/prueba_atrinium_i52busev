@@ -1,0 +1,60 @@
+{% extends 'principal/index.html.twig' %}
+
+{% block title %}Listado de Empresas{% endblock %}
+
+{% block body %}
+
+<h1><center>Listado de empresas</center></h1>
+
+{% if empresas is not same as("") and empresas is not null and empresas is not empty %}
+<div class="container h-100 " style="margin-top:40px">
+    <table id="tbEmpresa" class="table table-hover table-sm" style="border: 10px ridge DeepPink;">
+        <thead style="border-bottom-style:2px solid #24a690;">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Teléfono</th>
+                <th>Email</th>
+                <th>Sector</th>
+                <th style="width:20%"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                    <div class="scrollit">
+                            {% for empresa in empresas %}
+                                <tr id ='{{empresa.id}}'>
+                                    <td>{{empresa.id}}</td>
+                                    <td>{{empresa.nombre}}</td>
+                                    <td>{{empresa.telefono}}</td>
+                                    <td>{{empresa.email}}</td>
+                                    <td>{{empresa.sector.nombre}}</td>
+                                    <td style="width:19%" align="center">
+                                        <button type="button" class="btn btn-warning" onclick="location.href='{{ path('modificarEmpresa', {id: empresa.id})}}'">Modificar</button>
+                                        <button type="button" class="btn btn-danger" onclick="location.href='{{ path('eliminarEmpresa', {id: empresa.id})}}'">Eliminar</button>
+                                    </td> 
+                                </tr>
+                            {% endfor %}
+                    </div>
+               </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="container h-100 " style="margin-top:40px">
+    <div class="form-row">
+        <div id="boton_volver" class="form-group col-md-6">
+            <button type="button" class="btn btn-default" onclick="location.href='{{ path('principal')}}'">Volver</button>
+        </div>
+    </div>
+    </div>
+</div>
+{% else %}
+<div class="container h-100 " style="margin-top:40px">
+    <p style="text-align:center">No se ha encontrado ninguna empresa</p>
+    <button type="button" class="btn btn-default" onclick="location.href='{{ path('principal')}}'">Volver</button>
+</div>
+{% endif %}
+
+    <center><button type="button" class="btn btn-success" onclick="location.href='{{ path('registrarEmpresa')}}'">Añadir una nueva empresa</button></center>
+
+{% endblock %}
