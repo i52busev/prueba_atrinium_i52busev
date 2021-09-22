@@ -6,6 +6,8 @@
 
 <h1><center>Listado de sectores</center></h1>
 
+<center><button type="button" class="btn btn-success" onclick="location.href='{{ path('registrarSector')}}'">Añadir un nuevo sector</button></center>
+
 {% if sectores is not same as("") and sectores is not null and sectores is not empty %}
 <div class="container h-100 " style="margin-top:40px">
     <table id="tbSector" class="table table-hover table-sm" style="border: 10px ridge DeepPink;">
@@ -34,7 +36,11 @@
             </tr>
         </tbody>
     </table>
-    <div class="container h-100 " style="margin-top:40px">
+    <h4>Sectores registrados: {{ sectores.getTotalItemCount }}</h4>
+    <div class="navigation">
+    {{ knp_pagination_render(sectores) }}
+    </div>
+    <div class="container h-100 " style="margin-top:5px">
     <div class="form-row">
         <div id="boton_volver" class="form-group col-md-6">
             <button type="button" class="btn btn-default" onclick="location.href='{{ path('principal')}}'">Volver</button>
@@ -48,7 +54,5 @@
     <button type="button" class="btn btn-default" onclick="location.href='{{ path('principal')}}'">Volver</button>
 </div>
 {% endif %}
-
-    <center><button type="button" class="btn btn-success" onclick="location.href='{{ path('registrarSector')}}'">Añadir un nuevo sector</button></center>
 
 {% endblock %}

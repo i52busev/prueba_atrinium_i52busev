@@ -1,0 +1,61 @@
+{% extends 'principal/index.html.twig' %}
+
+{% block title %}Listado de Empresas{% endblock %}
+
+{% block body %}
+
+<div class="panel panel-default">
+    <div class="panel-heading"  style="background-color:DeepPink; border:DeepPink;">
+        <div class="container h-100 " style="margin-top:40px">
+        <h1 style="color:white"><center>Buscar Empresas<center></h1>
+        <body onload="buscar();">
+        <div class="form-row">
+            <div id="campo_nombre" class="form-group col-md-6" style="color:white">
+                <label>Nombre </label>
+                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre de la empresa" >
+            </div>
+            {# <div id="campo_sector" class="form-group col-md-6" style="color:white">
+                <label>Sector </label>
+                <input type="text" class="form-control" id="sector" name="sector" placeholder="Seleccione un sector" >
+            </div> #}
+        </div>
+    
+        <div class="form-row">
+            <div id="boton_buscar" class="form-group col-md-5">
+                <button type="button" class="btn btn-primary" onclick="buscar();" style="background-color:DarkSlateBlue; border:DarkSlateBlue;">Buscar</button>
+            </div>
+        </div>
+
+        </div>
+    </div>
+</div>
+
+{# Contenedor en el que se actualizan los resultados de la búsqueda #}
+<div id="listadoEmpresas">
+</div>
+
+<script>
+    function buscar(){
+        nombre = $("#nombre").val();
+        sector = $("#sector").val();
+        $("#listadoEmpresas").empty();
+        $.ajax
+        ({
+            type: "POST",
+            cache: true,
+            dataType: 'html',
+            url: "{{path('buscarEmpresa')}}",
+            data: {nombre: nombre, sector: sector},
+            success: function(html)
+            {
+                // Mostrar el resultado de la búsqueda
+                if(html !== ""){
+                    $("#listadoEmpresas").empty();
+                    $("#listadoEmpresas").html(html);
+                }
+            }
+        });
+    }
+</script>
+
+{% endblock %}

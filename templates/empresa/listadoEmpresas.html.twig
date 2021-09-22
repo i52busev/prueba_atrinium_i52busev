@@ -6,6 +6,8 @@
 
 <h1><center>Listado de empresas</center></h1>
 
+<center><button type="button" class="btn btn-success" onclick="location.href='{{ path('registrarEmpresa')}}'">Añadir una nueva empresa</button></center>
+
 {% if empresas is not same as("") and empresas is not null and empresas is not empty %}
 <div class="container h-100 " style="margin-top:40px">
     <table id="tbEmpresa" class="table table-hover table-sm" style="border: 10px ridge DeepPink;">
@@ -40,7 +42,17 @@
             </tr>
         </tbody>
     </table>
-    <div class="container h-100 " style="margin-top:40px">
+
+    {% if empresas.getTotalItemCount == 1 %}
+    <h4>Mostrando {{ empresas.getTotalItemCount }} resultado</h4>
+    {% else %}
+    <h4>Mostrando {{ empresas.getTotalItemCount }} resultados</h4>
+    {% endif %}
+    <div class="navigation">
+    {{ knp_pagination_render(empresas) }}
+    </div>
+
+    <div class="container h-100 " style="margin-top:5px">
     <div class="form-row">
         <div id="boton_volver" class="form-group col-md-6">
             <button type="button" class="btn btn-default" onclick="location.href='{{ path('principal')}}'">Volver</button>
@@ -54,7 +66,5 @@
     <button type="button" class="btn btn-default" onclick="location.href='{{ path('principal')}}'">Volver</button>
 </div>
 {% endif %}
-
-    <center><button type="button" class="btn btn-success" onclick="location.href='{{ path('registrarEmpresa')}}'">Añadir una nueva empresa</button></center>
 
 {% endblock %}

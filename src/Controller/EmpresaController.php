@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Empresa;
 use App\Form\EmpresaType;
 use App\Form\EliminarEmpresaType;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,14 +21,112 @@ class EmpresaController extends AbstractController
         ]);
     }
 
-    //Mostrar el listado con la información de las empresas
-    #[Route('/empresa/listado', name: 'listadoEmpresas')]
-    public function listadoEmpresas(): Response
+    #[Route('/empresa/empresaBuscar', name: 'empresaBuscar')]
+    public function empresaBuscar(Request $request): Response
+    {
+        $empresas = "";
+
+        return $this->render('empresa/buscarEmpresa.html.twig', [
+            'controller_name' => 'BuscarEmpresa',
+            'empresas' => $empresas
+        ]);
+    }
+
+    //Búsqueda de una empresa
+    #[Route('/empresa/buscar', name: 'buscarEmpresa')]
+    public function buscarEmpresa(PaginatorInterface $paginator, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $empresas = "";
+        $empresasTemp = "";
 
-        $empresas = $em->getRepository(Empresa::class)->findBy(array(), array('nombre' => 'ASC'));
+        //Parámetros de búsqueda
+        $nombre = $request->request->get('nombre');
+        $sector = $request->request->get('sector');
+
+        if(!empty($nombre) && !empty($sector)) {
+            //Buscar empresa por nombre y sector
+            /*$empresasTemp = $em->getRepository(Empresa::class)->createQueryBuilder('e')
+                ->where('e.nombre LIKE :nombre')
+                ->andWhere('e.sector LIKE :sector')
+                ->orderBy('e.nombre', 'ASC')
+                ->setParameter('nombre','%'.$nombre.'%')
+                ->setParameter('sector',$sector)
+                ->getQuery()
+                ->getResult();*/
+            $query = $em->getRepository(Empresa::class)->createQueryBuilder('e')
+                ->where('e.nombre LIKE :nombre')
+                ->andWhere('e.sector LIKE :sector')
+                ->orderBy('e.nombre', 'ASC')
+                ->setParameter('nombre','%'.$nombre.'%')
+                ->setParameter('sector',$sector)
+                ->getQuery();
+        }
+
+        elseif(!empty($nombre) && empty($sector)) {
+            //Buscar empresa por nombre
+            /*$empresasTemp = $em->getRepository(Empresa::class)->createQueryBuilder('e')
+                ->where('e.nombre LIKE :nombre')
+                ->orderBy('e.nombre', 'ASC')
+                ->setParameter('nombre','%'.$nombre.'%')
+                ->getQuery()
+                ->getResult();*/
+            $query = $em->getRepository(Empresa::class)->createQueryBuilder('e')
+                ->where('e.nombre LIKE :nombre')
+                ->orderBy('e.nombre', 'ASC')
+                ->setParameter('nombre','%'.$nombre.'%')
+                ->getQuery();
+        }
+
+        elseif(empty($nombre) && !empty($sector)) {
+            //Buscar empresa por sector
+            /*$empresasTemp = $em->getRepository(Empresa::class)->createQueryBuilder('e')
+                ->where('e.sector LIKE :sector')
+                ->orderBy('e.nombre', 'ASC')
+                ->setParameter('sector',$sector)
+                ->getQuery()
+                ->getResult();*/
+            $query = $em->getRepository(Empresa::class)->createQueryBuilder('e')
+                ->where('e.sector LIKE :sector')
+                ->orderBy('e.nombre', 'ASC')
+                ->setParameter('sector',$sector)
+                ->getQuery();
+        }
+
+        else {
+            //Buscar todas las empresas
+            $dql = "SELECT empresas FROM App:Empresa empresas";
+            $query = $em->createQuery($dql);
+        }
+
+        $empresasTemp = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
+
+        $empresas = $empresasTemp;
+
+        return $this->render('empresa/listadoEmpresas.html.twig', [
+            'controller_name' => 'BuscarEmpresa',
+            'empresas' => $empresas
+        ]);
+    }
+
+    //Mostrar el listado con la información de las empresas
+    #[Route('/empresa/listado', name: 'listadoEmpresas')]
+    public function listadoEmpresas(PaginatorInterface $paginator, Request $request): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $dql = "SELECT empresas FROM App:Empresa empresas";
+        $query = $em->createQuery($dql);
+
+        $empresas = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
 
         return $this->render('empresa/listadoEmpresas.html.twig', [
             'controller_name' => 'ListadoEmpresas',

@@ -6,6 +6,7 @@ use App\Entity\Sector;
 use App\Entity\Empresa;
 use App\Form\SectorType;
 use App\Form\EliminarSectorType;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,12 +24,18 @@ class SectorController extends AbstractController
 
     //Mostrar el listado con la información de los sectores
     #[Route('/sector/listado', name: 'listadoSectores')]
-    public function listadoSectores(): Response
+    public function listadoSectores(PaginatorInterface $paginator, Request $request): Response
     {
         $em = $this->getDoctrine()->getManager();
-        $sectores = "";
 
-        $sectores = $em->getRepository(Sector::class)->findBy(array(), array('nombre' => 'ASC'));
+        $dql = "SELECT sectores FROM App:Sector sectores";
+        $query = $em->createQuery($dql);
+
+        $sectores = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
 
         return $this->render('sector/listadoSectores.html.twig', [
             'controller_name' => 'ListadoSectores',
