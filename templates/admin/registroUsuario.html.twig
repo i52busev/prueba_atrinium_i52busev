@@ -1,0 +1,24 @@
+{% extends 'principal/index.html.twig' %}
+
+{% block title %}Registrar un usuario{% endblock %}
+
+{% block body %}
+
+<div class="container h-100 " style="margin-top:60px;">
+    <div class="row h-100-justify-content-center align-items-center ">
+        <div class="col-6 bg-white rounded my-3 p-5" >
+            <h3>Registro de usuario</h3>
+            {{form(formulario)}}
+            {{form(formC)}}
+            {{form(formA)}}
+        </div>
+        <div style="margin-top:10px">
+            <button type="button" class="btn btn-default" onclick="location.href='{{ path('listadoUsuarios')}}'">Volver</button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block content %}
+{% endblock %}

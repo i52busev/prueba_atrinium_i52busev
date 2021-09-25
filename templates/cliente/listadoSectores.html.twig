@@ -1,12 +1,10 @@
 {% extends 'principal/index.html.twig' %}
 
-{% block title %}Listado de Sectores{% endblock %}
+{% block title %}Mis Sectores{% endblock %}
 
 {% block body %}
 
-<h1><center>Listado de Sectores</center></h1>
-
-<center><button type="button" class="btn btn-success" onclick="location.href='{{ path('registrarSector')}}'">Añadir un nuevo sector</button></center>
+<h1><center>Mis Sectores</center></h1>
 
 {% if sectores is not same as("") and sectores is not null and sectores is not empty %}
 <div class="container h-100 " style="margin-top:40px">
@@ -26,8 +24,7 @@
                                     <td>{{sector.id}}</td>
                                     <td>{{sector.nombre}}</td>
                                     <td style="width:19%" align="center">
-                                        <button type="button" class="btn btn-warning" onclick="location.href='{{ path('modificarSector', {id: sector.id})}}'">Modificar</button>
-                                        <button type="button" class="btn btn-danger" onclick="location.href='{{ path('eliminarSector', {id: sector.id})}}'">Eliminar</button>
+                                        
                                     </td> 
                                 </tr>
                             {% endfor %}
@@ -36,22 +33,25 @@
             </tr>
         </tbody>
     </table>
-    <h4>Sectores registrados: {{ sectores.getTotalItemCount }}</h4>
+    {#
+    <h4>Sectores vinculados: {{ sectores.getTotalItemCount }}</h4>
+    
     <div class="navigation">
     {{ knp_pagination_render(sectores) }}
     </div>
+    #}
     <div class="container h-100 " style="margin-top:5px">
     <div class="form-row">
         <div id="boton_volver" class="form-group col-md-6">
-            <button type="button" class="btn btn-default" onclick="location.href='{{ path('principal')}}'">Volver</button>
+            <button type="button" class="btn btn-default" onclick="location.href='{{ path('cliente')}}'">Volver</button>
         </div>
     </div>
     </div>
 </div>
 {% else %}
 <div class="container h-100 " style="margin-top:40px">
-    <p style="text-align:center">No se ha encontrado ningún sector</p>
-    <button type="button" class="btn btn-default" onclick="location.href='{{ path('principal')}}'">Volver</button>
+    <p style="text-align:center">No existe ningún sector vinculado</p>
+    <button type="button" class="btn btn-default" onclick="location.href='{{ path('cliente')}}'">Volver</button>
 </div>
 {% endif %}
 

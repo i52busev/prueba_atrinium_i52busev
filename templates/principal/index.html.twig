@@ -12,8 +12,10 @@
     <h1><center>Página principal</center></h1>
 
     <center>
-        <button type="button" class="btn btn-warning" style="background-color:DeepPink; border:DeepPink;" onclick="location.href='{{ path('empresaBuscar')}}'">Empresas</button>
+        {# <button type="button" class="btn btn-warning" style="background-color:DeepPink; border:DeepPink;" onclick="location.href='{{ path('empresaBuscar')}}'">Empresas</button>
         <button type="button" class="btn btn-warning" style="background-color:DeepPink; border:DeepPink;" onclick="location.href='{{ path('listadoSectores')}}'">Sectores</button>
+        <button type="button" class="btn btn-warning" style="background-color:DeepPink; border:DeepPink;" onclick="location.href='{{ path('listadoUsuarios')}}'">Usuarios</button> #}
+        <button type="button" class="btn btn-warning" style="background-color:DeepPink; border:DeepPink;" onclick="location.href='{{path('app_login')}}'">Iniciar Sesión</button>
     </center>
 </div>
 {% endblock %}

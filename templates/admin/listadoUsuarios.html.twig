@@ -1,0 +1,63 @@
+{% extends 'principal/index.html.twig' %}
+
+{% block title %}Listado de Usuarios{% endblock %}
+
+{% block body %}
+
+<h1><center>Listado de Usuarios</center></h1>
+
+<center><button type="button" class="btn btn-success" onclick="location.href='{{ path('registroUsuario')}}'">Añadir un nuevo usuario</button></center>
+
+{% if usuarios is not same as("") and usuarios is not null and usuarios is not empty %}
+<div class="container h-100 " style="margin-top:40px">
+    <table id="tbUsuario" class="table table-hover table-sm" style="border: 10px ridge DeepPink;">
+        <thead style="border-bottom-style:2px solid #24a690;">
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th style="width:20%"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                    <div class="scrollit">
+                            {% for usuario in usuarios %}
+                                <tr id ='{{usuario.id}}'>
+                                    <td>{{usuario.id}}</td>
+                                    <td>{{usuario.email}}</td>
+                                    <td>{{usuario.roles[0]}}</td>
+                                    <td style="width:19%" align="center">
+                                        <button type="button" class="btn btn-warning" onclick="location.href='{{ path('modificarUsuario', {id: usuario.id})}}'">Modificar</button>
+                                        <button type="button" class="btn btn-danger" onclick="location.href='{{ path('eliminarUsuario', {id: usuario.id})}}'">Eliminar</button>
+                                        {% if usuario.roles[0] == "ROLE_CLIENTE" %}
+                                        <button type="button" class="btn btn-primary" onclick="location.href='{{ path('vincularUsuario', {id: usuario.id})}}'">Vincular</button>
+                                        {% endif %}
+                                    </td> 
+                                </tr>
+                            {% endfor %}
+                    </div>
+               </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Usuarios registrados: {{ usuarios.getTotalItemCount }}</h4>
+    <div class="navigation">
+    {{ knp_pagination_render(usuarios) }}
+    </div>
+    <div class="container h-100 " style="margin-top:5px">
+    <div class="form-row">
+        <div id="boton_volver" class="form-group col-md-6">
+            <button type="button" class="btn btn-default" onclick="location.href='{{ path('admin')}}'">Volver</button>
+        </div>
+    </div>
+    </div>
+</div>
+{% else %}
+<div class="container h-100 " style="margin-top:40px">
+    <p style="text-align:center">No se ha encontrado ningún usuario</p>
+    <button type="button" class="btn btn-default" onclick="location.href='{{ path('admin')}}'">Volver</button>
+</div>
+{% endif %}
+
+{% endblock %}

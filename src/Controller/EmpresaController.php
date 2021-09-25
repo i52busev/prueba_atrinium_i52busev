@@ -46,14 +46,6 @@ class EmpresaController extends AbstractController
 
         if(!empty($nombre) && !empty($sector)) {
             //Buscar empresa por nombre y sector
-            /*$empresasTemp = $em->getRepository(Empresa::class)->createQueryBuilder('e')
-                ->where('e.nombre LIKE :nombre')
-                ->andWhere('e.sector LIKE :sector')
-                ->orderBy('e.nombre', 'ASC')
-                ->setParameter('nombre','%'.$nombre.'%')
-                ->setParameter('sector',$sector)
-                ->getQuery()
-                ->getResult();*/
             $query = $em->getRepository(Empresa::class)->createQueryBuilder('e')
                 ->where('e.nombre LIKE :nombre')
                 ->andWhere('e.sector LIKE :sector')
@@ -65,12 +57,6 @@ class EmpresaController extends AbstractController
 
         elseif(!empty($nombre) && empty($sector)) {
             //Buscar empresa por nombre
-            /*$empresasTemp = $em->getRepository(Empresa::class)->createQueryBuilder('e')
-                ->where('e.nombre LIKE :nombre')
-                ->orderBy('e.nombre', 'ASC')
-                ->setParameter('nombre','%'.$nombre.'%')
-                ->getQuery()
-                ->getResult();*/
             $query = $em->getRepository(Empresa::class)->createQueryBuilder('e')
                 ->where('e.nombre LIKE :nombre')
                 ->orderBy('e.nombre', 'ASC')
@@ -80,12 +66,6 @@ class EmpresaController extends AbstractController
 
         elseif(empty($nombre) && !empty($sector)) {
             //Buscar empresa por sector
-            /*$empresasTemp = $em->getRepository(Empresa::class)->createQueryBuilder('e')
-                ->where('e.sector LIKE :sector')
-                ->orderBy('e.nombre', 'ASC')
-                ->setParameter('sector',$sector)
-                ->getQuery()
-                ->getResult();*/
             $query = $em->getRepository(Empresa::class)->createQueryBuilder('e')
                 ->where('e.sector LIKE :sector')
                 ->orderBy('e.nombre', 'ASC')
